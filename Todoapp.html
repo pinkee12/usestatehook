@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+       
+        let root=document.getElementById('root');
+        let reactRoot=ReactDOM.createRoot(root)
+
+        function TodoList() {
+            const [todos, setTodos] =React. useState([]);
+            const [newTodo, setNewTodo] =React. useState("");
+
+            const addTodo = () => {
+                if (newTodo.trim() === "") return; 
+                setTodos([...todos, { text: newTodo, completed: false }]);
+                setNewTodo(""); 
+            };
+
+            const toggleTodo = index => {
+                const newTodos = [...todos];
+                newTodos[index].completed = !newTodos[index].completed;
+                setTodos(newTodos);
+            };
+
+            const deleteTodo = index => {
+                const newTodos = [...todos];
+                newTodos.splice(index, 1);
+                setTodos(newTodos);
+            };
+
+            return (
+                <div>
+                    <input type="text" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
+                    <button onClick={addTodo}>Add Todo</button>
+
+                    <ul>
+                        {todos.map((todo, index) => (
+                            <li key={index}>
+                                <input
+                                    type="checkbox"
+                                    checked={todo.completed}
+                                    onChange={() => toggleTodo(index)}
+                                />
+                                <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
+                                    {todo.text}
+                                </span>
+                                <button onClick={() => deleteTodo(index)}>Delete</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        reactRoot.render(<TodoList/>)
+    </script>
+</body>
+</html>

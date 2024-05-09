@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Picker</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+   
+    class ColorPicker extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          color: '#F34', 
+          isValid: true, 
+        };
+      }
+
+     
+      handleInputChange = (e) => {
+        const color = e.target.value;
+        
+        const isValid = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color);
+        this.setState({ color, isValid });
+      };
+
+      render() {
+        const { color, isValid } = this.state;
+        return (
+          <div>
+            <input
+              type="text"
+              value={color}
+              onChange={this.handleInputChange}
+              style={{ marginBottom: '10px' }}
+            />
+            {!isValid && <p style={{ color: 'red' }}>Invalid color code</p>}
+            <div
+              style={{
+                width: '100px',
+                height: '100px',
+                backgroundColor: isValid ? color : 'transparent',
+                border: '1px solid black',
+              }}
+            ></div>
+          </div>
+        );
+      }
+    }
+
+ 
+    ReactDOM.render(<ColorPicker />, document.getElementById('root'));
+  </script>
+</html>
